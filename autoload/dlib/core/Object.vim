@@ -1,5 +1,5 @@
 " Date create: 2014-10-29 09:22:59
-" Last change: 2014-10-29 10:03:21
+" Last change: 2014-10-29 23:14:03
 " Author: Artur Sh. Mamedbekov (Artur-Mamedbekov@yandex.ru)
 " License: GNU GPL v3
 
@@ -11,7 +11,7 @@ let s:Object = {}
 " необходимо самостоятельно выполнить рекурсивное копирование объекта.
 " @return Полная копия класса с сохраненными ссылками на его методы.
 ""
-function! s:Object.new() dict " {{{1
+function! s:Object.new() " {{{1
   return deepcopy(self)
 endfunction " 1}}}
 
@@ -19,7 +19,7 @@ endfunction " 1}}}
 " Метод позволяет создать класс потомок от данного класса.
 " @return Полная копия класса с сохраненными ссылками на его методы.
 ""
-function! s:Object.expand() dict " {{{1
+function! s:Object.expand() " {{{1
   return deepcopy(self)
 endfunction " 1}}}
 

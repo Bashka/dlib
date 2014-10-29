@@ -1,11 +1,17 @@
 " Date create: 2014-10-29 10:15:54
-" Last change: 2014-10-29 12:51:38
+" Last change: 2014-10-29 23:14:32
 " Author: Artur Sh. Mamedbekov (Artur-Mamedbekov@yandex.ru)
 " License: GNU GPL v3
 
 let s:String = dlib#core#Object#.expand()
 
+"" {{{1
+" @var string Строковое значение объекта.
+"" 1}}}
 let s:String.value = ''
+"" {{{1
+" @var integer Внутренний указатель текущего символа строки.
+"" 1}}}
 let s:String.point = 0
 
 "" {{{1
@@ -13,7 +19,7 @@ let s:String.point = 0
 " @param string value Значение строки.
 " @return Объектное представление строки.
 "" 1}}}
-function! s:String.new(value) dict " {{{1
+function! s:String.new(value) " {{{1
   let l:obj = deepcopy(self)
   let l:obj.value = a:value
   return l:obj
