@@ -1,5 +1,5 @@
 " Date create: 2014-10-29 19:59:51
-" Last change: 2014-10-29 23:14:45
+" Last change: 2014-10-30 09:07:55
 " Author: Artur Sh. Mamedbekov (Artur-Mamedbekov@yandex.ru)
 " License: GNU GPL v3
 
@@ -33,7 +33,7 @@ function! s:Window.new(...) " {{{1
       let l:currentWinNumber = winnr()
       if a:1 == 'v'
         vnew
-      else
+      elseif a:1 == 'g'
         new
       endif
       let l:obj.number = winnr()

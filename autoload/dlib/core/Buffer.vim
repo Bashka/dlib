@@ -1,5 +1,5 @@
 " Date create: 2014-10-29 14:40:22
-" Last change: 2014-10-29 23:47:56
+" Last change: 2014-10-30 10:10:46
 " Author: Artur Sh. Mamedbekov (Artur-Mamedbekov@yandex.ru)
 " License: GNU GPL v3
 
@@ -63,6 +63,13 @@ function! s:Buffer.unload() dict " {{{1
 endfunction " 1}}}
 
 "" {{{1
+" Метод удаляет целевой буфер.
+"" 1}}}
+function! s:Buffer.delete() dict " {{{1
+  exe 'bw! ' . self.number
+endfunction " 1}}}
+
+"" {{{1
 " Метод делает буфер активным для текущего окна.
 " @return dlib#core#Buffer# Исходный объект.
 "" 1}}}
@@ -111,7 +118,7 @@ function! s:Buffer.option(option, ...) dict " {{{1
 endfunction " 1}}}
 
 "" {{{1
-" Метод создает привязку для буфера.
+" Метод создает привязку команды для буфера.
 " @param string mode Режим, для которого создается привязка. Возможно одно из следующих значений: n, v, o, i, l, c.
 " @param string sequence Комбинация, для которой создается привязка.
 " @param string command Связываемая команда.
@@ -125,6 +132,18 @@ function! s:Buffer.noremap(mode, sequence, command) dict " {{{1
   endif
   let self.map[a:mode][a:sequence] = a:command
   exe a:mode . 'noremap <buffer> ' . a:sequence . ' ' . a:command
+  exe 'buffer ' . l:currentBuffNum
+  return self
+endfunction " 1}}}
+
+function! s:Buffer.listen(mode, sequence, listener) " {{{1
+  let l:currentBuffNum = bufnr('%')
+  exe 'buffer ' . self.number
+  if !has_key(self.map, a:mode)
+    let self.map[a:mode] = {}
+  endif
+  let self.map[a:mode][a:sequence] = ' :call dlib#core#Buffer#.new(bufnr("%")).' . a:listener . '()<CR>'
+  exe a:mode . 'noremap <buffer> ' . a:sequence . self.map[a:mode][a:sequence]
   exe 'buffer ' . l:currentBuffNum
   return self
 endfunction " 1}}}
