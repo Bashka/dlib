@@ -1,8 +1,11 @@
 " Date create: 2014-10-29 13:49:43
-" Last change: 2014-10-29 22:00:12
+" Last change: 2014-11-03 23:02:17
 " Author: Artur Sh. Mamedbekov (Artur-Mamedbekov@yandex.ru)
 " License: GNU GPL v3
 
+"" {{{1
+" Класс представляет последовательность типа "Стек".
+"" 1}}}
 let s:Stack = dlib#core#Object#.expand()
 
 "" {{{1

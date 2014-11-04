@@ -1,8 +1,11 @@
 " Date create: 2014-10-29 14:09:24
-" Last change: 2014-10-29 22:01:33
+" Last change: 2014-11-03 23:02:43
 " Author: Artur Sh. Mamedbekov (Artur-Mamedbekov@yandex.ru)
 " License: GNU GPL v3
 
+"" {{{1
+" Класс представляет последовательность типа "Очередь".
+"" 1}}}
 let s:Turn = dlib#core#Object#.expand()
 
 "" {{{1

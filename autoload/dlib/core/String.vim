@@ -1,8 +1,11 @@
 " Date create: 2014-10-29 10:15:54
-" Last change: 2014-10-29 23:14:32
+" Last change: 2014-11-03 23:01:52
 " Author: Artur Sh. Mamedbekov (Artur-Mamedbekov@yandex.ru)
 " License: GNU GPL v3
 
+"" {{{1
+" Класс представляет обертку строкового типа данных. Все методы, определенные в данном классе, не влияют на исходную строку, а создают новую, результирующую строку.
+"" 1}}}
 let s:String = dlib#core#Object#.expand()
 
 "" {{{1
@@ -16,12 +19,17 @@ let s:String.point = 0
 
 "" {{{1
 " Конструктор класса.
-" @param string value Значение строки.
+" @param string value [optional] Значение строки. Если параметр не задан, используется текущая строка редактора, при этом внутренний указатель будет установлен в текущую позицию курсора.
 " @return Объектное представление строки.
 "" 1}}}
-function! s:String.new(value) " {{{1
+function! s:String.new(...) " {{{1
   let l:obj = deepcopy(self)
-  let l:obj.value = a:value
+  if exists('a:1')
+    let l:obj.value = a:1
+  else
+    let l:obj.value = getline('.')
+    let l:obj.point = col('.') - 1
+  endif
   return l:obj
 endfunction " 1}}}
 
@@ -140,11 +148,16 @@ endfunction " 1}}}
 
 "" {{{1
 " Метод делит строку на подстроки по заданному разделителю.
-" @param string delimiter Символ-разделитель.
+" @param string delimiter [optional] Символ-разделитель. Если параметр не задан, строка делится посимвольно.
 " @return array Массив подстрок исходной строки.
 "" 1}}}
-function! s:String.split(delimiter) dict " {{{1
-  return split(self.value, a:delimiter)
+function! s:String.split(...) dict " {{{1
+  if !exists('a:1')
+    let l:delimiter = '\zs'
+  else
+    let l:delimiter = a:1
+  endif
+  return split(self.value, l:delimiter)
 endfunction " 1}}}
 
 "" {{{1
@@ -158,6 +171,32 @@ function! s:String.concat(str) dict " {{{1
   elseif type(a:str) == 4
     return s:String.new(self.value . a:str.value)
   endif
+endfunction " 1}}}
+
+"" {{{1
+" Метод выполняет поиск с заменой в исходной строке и возвращает результирующую строку.
+" @param string search Шаблон поиска.
+" @param string replace Параметры замены.
+" @return dlib#core#String# Результирующая строка.
+"" 1}}}
+function! s:String.replace(search, replace) dict " {{{1
+  return s:String.new(substitute(self.value, a:search, a:replace, 'g'))
+endfunction " 1}}}
+
+"" {{{1
+" Метод преобразует исходную строку в аналогичную, но для которой все буквы приведены в нижний регистр.
+" @return dlib#core#String# Исходная строка, в которой все буквы приведены в нижний регистр.
+"" 1}}}
+function! s:String.low() dict " {{{1
+  return s:String.new(tolower(self.value))
+endfunction " 1}}}
+
+"" {{{1
+" Метод преобразует исходную строку в аналогичную, но для которой все буквы приведены в верхний регистр.
+" @return dlib#core#String# Исходная строка, в которой все буквы приведены в верхний регистр.
+"" 1}}}
+function! s:String.up() dict " {{{1
+  return s:String.new(toupper(self.value))
 endfunction " 1}}}
 
 let dlib#core#String# = s:String

@@ -1,10 +1,13 @@
 " Date create: 2014-10-29 19:59:51
-" Last change: 2014-10-30 09:07:55
+" Last change: 2014-11-03 23:07:44
 " Author: Artur Sh. Mamedbekov (Artur-Mamedbekov@yandex.ru)
 " License: GNU GPL v3
 
 let s:Buffer = dlib#core#Buffer#
 
+"" {{{1
+" Класс представляет окно редактора и позволяет как управлять им, так и создавать новые окна.
+"" 1}}}
 let s:Window = dlib#core#Object#.expand()
 
 "" {{{1
@@ -13,7 +16,7 @@ let s:Window = dlib#core#Object#.expand()
 let s:Window.number = 0
 
 "" {{{1
-" Метод устанавливает активное окно по его номеру.
+" Метод делает заданное окно активным.
 " @param integer number Номер целевого окна.
 "" 1}}}
 function! s:Window.select(number) " {{{1
