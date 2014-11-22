@@ -1,7 +1,7 @@
-" Date create: 2014-11-03 23:13:33
-" Last change: 2014-11-04 17:49:05
+" Date Create: 2014-11-03 23:13:33
+" Last Change: 2014-11-10 11:27:22
 " Author: Artur Sh. Mamedbekov (Artur-Mamedbekov@yandex.ru)
-" License: GNU GPL v3
+" License: GNU GPL v3 (http://www.gnu.org/copyleft/gpl.html)
 
 let s:UnitTest = dlib#core#Object#.expand()
 

@@ -1,7 +1,7 @@
-" Date create: 2014-10-29 10:15:54
-" Last change: 2014-11-03 23:01:52
+" Date Create: 2014-10-29 10:15:54
+" Last Change: 2014-11-12 15:18:33
 " Author: Artur Sh. Mamedbekov (Artur-Mamedbekov@yandex.ru)
-" License: GNU GPL v3
+" License: GNU GPL v3 (http://www.gnu.org/copyleft/gpl.html)
 
 "" {{{1
 " Класс представляет обертку строкового типа данных. Все методы, определенные в данном классе, не влияют на исходную строку, а создают новую, результирующую строку.
@@ -126,7 +126,11 @@ endfunction " 1}}}
 " @return integer Позиция искомой подстроки или -1, если подстрока не найдена.
 "" 1}}}
 function! s:String.rfind(needle, ...) dict " {{{1
-  let l:index = strridx(self.value, a:needle, (exists('a:1'))? a:1 : 0)
+  if exists('a:1')
+    let l:index = strridx(self.value, a:needle, a:1)
+  else
+    let l:index = strridx(self.value, a:needle)
+  endif
   if l:index != -1
     let self.point = l:index
   endif
@@ -185,7 +189,7 @@ endfunction " 1}}}
 
 "" {{{1
 " Метод преобразует исходную строку в аналогичную, но для которой все буквы приведены в нижний регистр.
-" @return dlib#core#String# Исходная строка, в которой все буквы приведены в нижний регистр.
+" @return dlib#core#String# Результирующая строка, в которой все буквы приведены в нижний регистр.
 "" 1}}}
 function! s:String.low() dict " {{{1
   return s:String.new(tolower(self.value))
@@ -193,7 +197,7 @@ endfunction " 1}}}
 
 "" {{{1
 " Метод преобразует исходную строку в аналогичную, но для которой все буквы приведены в верхний регистр.
-" @return dlib#core#String# Исходная строка, в которой все буквы приведены в верхний регистр.
+" @return dlib#core#String# Результирующая строка, в которой все буквы приведены в верхний регистр.
 "" 1}}}
 function! s:String.up() dict " {{{1
   return s:String.new(toupper(self.value))

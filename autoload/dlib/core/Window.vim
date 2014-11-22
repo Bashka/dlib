@@ -1,7 +1,7 @@
-" Date create: 2014-10-29 19:59:51
-" Last change: 2014-11-03 23:07:44
+" Date Create: 2014-10-29 19:59:51
+" Last Change: 2014-11-10 11:27:25
 " Author: Artur Sh. Mamedbekov (Artur-Mamedbekov@yandex.ru)
-" License: GNU GPL v3
+" License: GNU GPL v3 (http://www.gnu.org/copyleft/gpl.html)
 
 let s:Buffer = dlib#core#Buffer#
 
@@ -40,6 +40,7 @@ function! s:Window.new(...) " {{{1
         new
       endif
       let l:obj.number = winnr()
+      call self.buffer().option('buftype', 'nofile')
       call self.select(l:currentWinNumber + 1)
     endif
   else
@@ -58,8 +59,8 @@ function! s:Window.active() dict " {{{1
 endfunction " 1}}}
 
 "" {{{1
-" Метод определяет буфер, связанный с окном или устанавливает его для окна.
-" @param dlib#core#Buffer#|integer buffer Устанавливаемый буфер или его номер.
+" Метод определяет буфер, связанный с окном или устанавливает его для окна, делая этот буфер активным.
+" @param dlib#core#Buffer#|integer|string buffer [optional] Устанавливаемый буфер или его номер. Если в качестве параметра передана строка, создается новый буфер с данным именем для вызываемого окна.
 " @return dlib#core#Buffer# Буфер, установленный в окне.
 "" 1}}}
 function! s:Window.buffer(...) dict " {{{1
@@ -68,11 +69,18 @@ function! s:Window.buffer(...) dict " {{{1
     call self.active()
     if type(a:1) == 0
       let l:buffer = s:Buffer.new(a:1)
+    elseif type(a:1) == 1
+      let l:currentBuf = s:Buffer.new(winbufnr(self.number))
+      let l:newBuf = s:Buffer.new(a:1)
+      call self.buffer(l:newBuf)
+      call l:currentBuf.delete()
+      return l:newBuf
     else
       let l:buffer = a:1
     endif
     call l:buffer.active()
     call self.select(l:currentWinNumber)
+    return l:buffer
   else
     return s:Buffer.new(winbufnr(self.number))
   endif

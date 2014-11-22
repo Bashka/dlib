@@ -1,7 +1,7 @@
-" Date create: 2014-10-29 21:52:31
-" Last change: 2014-10-30 17:49:22
+" Date Create: 2014-10-29 21:52:31
+" Last Change: 2014-11-10 11:27:28
 " Author: Artur Sh. Mamedbekov (Artur-Mamedbekov@yandex.ru)
-" License: GNU GPL v3
+" License: GNU GPL v3 (http://www.gnu.org/copyleft/gpl.html)
 
 let s:Buffer = dlib#core#Buffer#
 let s:Stack = dlib#core#Stack#
@@ -27,7 +27,10 @@ function! s:BufferStack.push(buffer) dict " {{{1
   let self.number = a:buffer.number
   call self.stack.push(a:buffer)
   let a:buffer.bufferStack = self
-  call a:buffer.noremap('n', 'q', ':call dlib#core#Buffer#.new(bufnr("%")).bufferStack.quit()<CR>')
+  function! a:buffer.quit() " {{{2
+    call self.bufferStack.quit()
+  endfunction " 2}}}
+  call a:buffer.listen('n', 'q', 'quit')
   return self
 endfunction " 1}}}
 
@@ -37,9 +40,7 @@ endfunction " 1}}}
 
 function! s:BufferStack.quit() dict " {{{1
   let l:currentBuffer = self.stack.pop()
-  if self.stack.length() == 0
-    call l:currentBuffer.unload()
-  else
+  if self.stack.length() != 0
     let self.number = self.stack.current().number
     call self.active()
   endif

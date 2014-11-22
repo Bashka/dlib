@@ -1,7 +1,7 @@
-" Date create: 2014-10-29 22:52:51
-" Last change: 2014-11-03 23:11:35
+" Date Create: 2014-10-29 22:52:51
+" Last Change: 2014-11-12 16:11:41
 " Author: Artur Sh. Mamedbekov (Artur-Mamedbekov@yandex.ru)
-" License: GNU GPL v3
+" License: GNU GPL v3 (http://www.gnu.org/copyleft/gpl.html)
 
 "" {{{1
 " Данная служба отвечает за хранение объектов, повторная инстанциация которых не желательна. Если необходимо получить существующий объект, при попытке повторной его инстанциации, следует предварительно запросить его у данной службы, а в случае первого создания объекта, записать его здесь.
@@ -29,12 +29,24 @@ endfunction " 1}}}
 
 "" {{{1
 " Метод добавляет объект в хранилище.
-" @param string key Ключь добавляемого объекта. Рекомендуется в качестве ключа использовать следующую строковую последовательность: <ИмяКласса>:<Ключ>.
+" @param string key Ключ добавляемого объекта. Рекомендуется в качестве ключа использовать следующую строковую последовательность: <ИмяКласса>:<Ключ>.
 " @param hash obj Добавляемый объект.
 " @return dlib#core#ObjectPool# Исходный объект.
 "" 1}}}
 function! s:ObjectPool.set(key, obj) " {{{1
   let self.pool[a:key] = a:obj
+  return self
+endfunction " 1}}}
+
+"" {{{1
+" Метод удаляет объект из хранилища.
+" @param string key Ключ удаляемого объекта.
+" @return dlib#core#ObjectPool# Исходный объект.
+"" 1}}}
+function! s:ObjectPool.delete(key) " {{{1
+  if has_key(self.pool, a:key)
+    unlet self.pool[a:key]
+  endif
   return self
 endfunction " 1}}}
 
